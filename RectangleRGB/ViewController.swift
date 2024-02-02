@@ -20,7 +20,7 @@ final class ViewController: UIViewController {
     @IBOutlet var blueSlider: UISlider!
     
     private var currentRedValueColor = 0.33
-    private var currentGreenValueColor = 0.65
+    private var currentGreenValueColor = 0.52
     private var currentBlueValueColor = 0.22
     
     override func viewDidLoad() {
