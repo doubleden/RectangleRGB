@@ -36,8 +36,16 @@ final class ViewController: UIViewController {
             alpha: 1
         )
         
-        redValueLabel.text = String(format: "%.2f", redSlider.value)
-        greenValueLabel.text = String(format: "%.2f", greenSlider.value)
-        blueValueLabel.text = String(format: "%.2f", blueSlider.value)
+        updateValueLabel(redValueLabel, in: redSlider)
+        updateValueLabel(greenValueLabel, in: greenSlider)
+        updateValueLabel(blueValueLabel, in: blueSlider)
+    }
+    
+    private func updateValueLabel(_ valueLabel: UILabel, in slider: UISlider) {
+        valueLabel.text = slider.value.formatted(
+            .number.precision(
+                .fractionLength(2)
+            )
+        )
     }
 }
