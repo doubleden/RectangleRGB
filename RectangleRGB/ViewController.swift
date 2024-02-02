@@ -19,47 +19,25 @@ final class ViewController: UIViewController {
     @IBOutlet var greenSlider: UISlider!
     @IBOutlet var blueSlider: UISlider!
     
-    private var currentRedValueColor: CGFloat = 0.33
-    private var currentGreenValueColor: CGFloat = 0.52
-    private var currentBlueValueColor: CGFloat = 0.22
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         rectangleView.layer.cornerRadius = 10
-        updateReactangleColor()
     }
     
-    @IBAction func sliderAction(_ sender: UISlider) {
-        switch sender {
-        case redSlider:
-            currentRedValueColor = CGFloat(sender.value)
-            changeValue(in: redValueLabel, sender)
-        case greenSlider:
-            currentGreenValueColor = CGFloat(sender.value)
-            changeValue(in: greenValueLabel, sender)
-        case blueSlider:
-            currentBlueValueColor = CGFloat(sender.value)
-            changeValue(in: blueValueLabel, sender)
-        default:
-            return
-        }
-        updateReactangleColor()
-    }
-    
-    private func updateReactangleColor() {
+    @IBAction func sliderAction() {
+        let red = CGFloat(redSlider.value)
+        let green = CGFloat(greenSlider.value)
+        let blue = CGFloat(blueSlider.value)
+
         rectangleView.backgroundColor = UIColor(
-            red: currentRedValueColor,
-            green: currentGreenValueColor,
-            blue: currentBlueValueColor,
+            red: red,
+            green: green,
+            blue: blue,
             alpha: 1
         )
-    }
-    
-    private func changeValue(in value: UILabel, _ slider: UISlider) {
-        value.text = slider.value.formatted(
-            .number.precision(
-                .fractionLength(2)
-            )
-        )
+        
+        redValueLabel.text = String(format: "%.2f", redSlider.value)
+        greenValueLabel.text = String(format: "%.2f", greenSlider.value)
+        blueValueLabel.text = String(format: "%.2f", blueSlider.value)
     }
 }
