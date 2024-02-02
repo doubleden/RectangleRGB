@@ -107,6 +107,9 @@
                             <constraint firstItem="nbF-F9-L2d" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sjr-Ta-Kjb"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="rectangleView" destination="nbF-F9-L2d" id="NPm-KN-ZEm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
