@@ -19,45 +19,38 @@ final class ViewController: UIViewController {
     @IBOutlet var greenSlider: UISlider!
     @IBOutlet var blueSlider: UISlider!
     
-    private var currentRedLabelValue = 0.33
-    private var currentGreenLabelValue = 0.65
-    private var currentBlueLabelValue = 0.22
+    private var currentRedValueColor = 0.33
+    private var currentGreenValueColor = 0.65
+    private var currentBlueValueColor = 0.22
     
     override func viewDidLoad() {
         super.viewDidLoad()
         rectangleView.layer.cornerRadius = 10
-        rectangleView.backgroundColor = UIColor(
-            red: currentRedLabelValue,
-            green: currentGreenLabelValue,
-            blue: currentBlueLabelValue,
-            alpha: 1
-        )
+        updateReactangleColor()
     }
     
     @IBAction func sliderAction(_ sender: UISlider) {
         switch sender {
         case redSlider:
-            currentRedLabelValue = Double(sender.value)
+            currentRedValueColor = Double(sender.value)
             changeValue(in: redValueLabel, sender)
-            changeReactangleColor()
         case greenSlider:
-            currentGreenLabelValue = Double(sender.value)
-            changeValue(in: redValueLabel, sender)
-            changeReactangleColor()
+            currentGreenValueColor = Double(sender.value)
+            changeValue(in: greenValueLabel, sender)
         case blueSlider:
-            currentBlueLabelValue = Double(sender.value)
-            changeValue(in: redValueLabel, sender)
-            changeReactangleColor()
+            currentBlueValueColor = Double(sender.value)
+            changeValue(in: blueValueLabel, sender)
         default:
             return
         }
+        updateReactangleColor()
     }
     
-    private func changeReactangleColor() {
+    private func updateReactangleColor() {
         rectangleView.backgroundColor = UIColor(
-            red: CGFloat(currentRedLabelValue),
-            green: CGFloat(currentGreenLabelValue),
-            blue: CGFloat(currentBlueLabelValue),
+            red: CGFloat(currentRedValueColor),
+            green: CGFloat(currentGreenValueColor),
+            blue: CGFloat(currentBlueValueColor),
             alpha: 1
         )
     }
