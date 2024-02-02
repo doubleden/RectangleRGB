@@ -19,9 +19,9 @@ final class ViewController: UIViewController {
     @IBOutlet var greenSlider: UISlider!
     @IBOutlet var blueSlider: UISlider!
     
-    private var currentRedValueColor = 0.33
-    private var currentGreenValueColor = 0.52
-    private var currentBlueValueColor = 0.22
+    private var currentRedValueColor: CGFloat = 0.33
+    private var currentGreenValueColor: CGFloat = 0.52
+    private var currentBlueValueColor: CGFloat = 0.22
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,13 +32,13 @@ final class ViewController: UIViewController {
     @IBAction func sliderAction(_ sender: UISlider) {
         switch sender {
         case redSlider:
-            currentRedValueColor = Double(sender.value)
+            currentRedValueColor = CGFloat(sender.value)
             changeValue(in: redValueLabel, sender)
         case greenSlider:
-            currentGreenValueColor = Double(sender.value)
+            currentGreenValueColor = CGFloat(sender.value)
             changeValue(in: greenValueLabel, sender)
         case blueSlider:
-            currentBlueValueColor = Double(sender.value)
+            currentBlueValueColor = CGFloat(sender.value)
             changeValue(in: blueValueLabel, sender)
         default:
             return
@@ -48,9 +48,9 @@ final class ViewController: UIViewController {
     
     private func updateReactangleColor() {
         rectangleView.backgroundColor = UIColor(
-            red: CGFloat(currentRedValueColor),
-            green: CGFloat(currentGreenValueColor),
-            blue: CGFloat(currentBlueValueColor),
+            red: currentRedValueColor,
+            green: currentGreenValueColor,
+            blue: currentBlueValueColor,
             alpha: 1
         )
     }
