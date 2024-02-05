@@ -32,29 +32,13 @@ final class ViewController: UIViewController {
             alpha: 1
         )
         
-        updateValueLabel(sender)
-    }
-
-    
-    private func updateValueLabel(_ slider: UISlider) {
-        guard let sliderType = SliderType(rawValue: slider.tag) else { return }
-        
-        switch sliderType {
-        case .red:
-            redValueLabel.text = String(format: "%.2f", slider.value)
-        case .green:
-            greenValueLabel.text = String(format: "%.2f", slider.value)
-        case .blue:
-            blueValueLabel.text = String(format: "%.2f", slider.value)
+        switch sender {
+        case redSlider:
+            redValueLabel.text = String(format: "%.2f", sender.value)
+        case greenSlider:
+            greenValueLabel.text = String(format: "%.2f", sender.value)
+        default:
+            blueValueLabel.text = String(format: "%.2f", sender.value)
         }
-    }
-}
-
-// MARK: Slider Type
-extension ViewController {
-    enum SliderType: Int {
-        case red = 1
-        case green = 2
-        case blue = 3
     }
 }
