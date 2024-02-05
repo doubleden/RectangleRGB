@@ -24,28 +24,37 @@ final class ViewController: UIViewController {
         rectangleView.layer.cornerRadius = 10
     }
     
-    @IBAction func sliderAction() {
-        let red = CGFloat(redSlider.value)
-        let green = CGFloat(greenSlider.value)
-        let blue = CGFloat(blueSlider.value)
-
+    @IBAction func sliderAction(_ sender: UISlider) {
         rectangleView.backgroundColor = UIColor(
-            red: red,
-            green: green,
-            blue: blue,
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
             alpha: 1
         )
         
-        updateValueLabel(redValueLabel, in: redSlider)
-        updateValueLabel(greenValueLabel, in: greenSlider)
-        updateValueLabel(blueValueLabel, in: blueSlider)
+        updateValueLabel(sender)
     }
+
     
-    private func updateValueLabel(_ valueLabel: UILabel, in slider: UISlider) {
-        valueLabel.text = slider.value.formatted(
-            .number.precision(
-                .fractionLength(2)
-            )
-        )
+    private func updateValueLabel(_ slider: UISlider) {
+        guard let sliderType = SliderType(rawValue: slider.tag) else { return }
+        
+        switch sliderType {
+        case .red:
+            redValueLabel.text = String(format: "%.2f", slider.value)
+        case .green:
+            greenValueLabel.text = String(format: "%.2f", slider.value)
+        case .blue:
+            blueValueLabel.text = String(format: "%.2f", slider.value)
+        }
+    }
+}
+
+// MARK: Slider Type
+extension ViewController {
+    enum SliderType: Int {
+        case red = 1
+        case green = 2
+        case blue = 3
     }
 }
