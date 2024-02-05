@@ -81,43 +81,36 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="27" translatesAutoresizingMaskIntoConstraints="NO" id="AGd-9z-UrJ">
                                                 <rect key="frame" x="106" y="0.0" width="255" height="144"/>
                                                 <subviews>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.33300000000000002" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="GIv-dE-q1B">
+                                                    <slider opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.33300000000000002" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="GIv-dE-q1B">
                                                         <rect key="frame" x="-2" y="0.0" width="259" height="31"/>
                                                         <color key="minimumTrackTintColor" systemColor="systemRedColor"/>
                                                         <color key="maximumTrackTintColor" red="0.98186905689265258" green="0.98640179266948946" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <color key="thumbTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <connections>
-                                                            <action selector="sliderAction" destination="BYZ-38-t0r" eventType="valueChanged" id="ed5-0p-TyH"/>
+                                                            <action selector="sliderAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="qh6-tZ-Ob7"/>
                                                         </connections>
                                                     </slider>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.52000000000000002" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nsd-wJ-sgM">
+                                                    <slider opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.52000000000000002" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="nsd-wJ-sgM">
                                                         <rect key="frame" x="-2" y="57" width="259" height="31"/>
                                                         <color key="minimumTrackTintColor" systemColor="systemGreenColor"/>
                                                         <color key="maximumTrackTintColor" red="0.98186905689265258" green="0.98640179266948946" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <color key="thumbTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <connections>
-                                                            <action selector="sliderAction" destination="BYZ-38-t0r" eventType="valueChanged" id="Y1F-pl-MpX"/>
+                                                            <action selector="sliderAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="aoo-Jk-k25"/>
                                                         </connections>
                                                     </slider>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.22" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="WM0-zZ-ECZ">
+                                                    <slider opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.22" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="WM0-zZ-ECZ">
                                                         <rect key="frame" x="-2" y="114" width="259" height="31"/>
                                                         <color key="minimumTrackTintColor" systemColor="systemBlueColor"/>
                                                         <color key="maximumTrackTintColor" red="0.98186905689265258" green="0.98640179266948946" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <color key="thumbTintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <connections>
-                                                            <action selector="sliderAction" destination="BYZ-38-t0r" eventType="valueChanged" id="ABO-c4-UfM"/>
+                                                            <action selector="sliderAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="EMv-CU-rci"/>
                                                         </connections>
                                                     </slider>
                                                 </subviews>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="255" id="bGO-8Z-tDb"/>
-                                                </constraints>
                                             </stackView>
                                         </subviews>
-                                        <constraints>
-                                            <constraint firstItem="AGd-9z-UrJ" firstAttribute="leading" secondItem="rEe-nO-gEi" secondAttribute="trailing" constant="15" id="0p6-Md-8ED"/>
-                                            <constraint firstItem="rEe-nO-gEi" firstAttribute="leading" secondItem="m6R-Vl-i2i" secondAttribute="trailing" constant="15" id="Lkk-GT-jGr"/>
-                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <constraints>
