@@ -19,6 +19,10 @@ final class SettingViewController: UIViewController {
     @IBOutlet var greenSlider: UISlider!
     @IBOutlet var blueSlider: UISlider!
     
+    @IBOutlet var redValueTF: UITextField!
+    @IBOutlet var greenValueTF: UITextField!
+    @IBOutlet var blueValueTF: UITextField!
+    
     // MARK: - Public Properties
     var color: UIColor!
     weak var delegate: SettingViewControllerDelegate?
