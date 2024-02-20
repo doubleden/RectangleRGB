@@ -12,23 +12,17 @@ protocol SettingViewControllerDelegate: AnyObject {
 }
 
 final class MainViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let settingVC = segue.destination as? SettingViewController
+        settingVC?.color = view.backgroundColor
         settingVC?.delegate = self
     }
-    
 }
 
+// MARK: - SettingViewControllerDelegate
 extension MainViewController: SettingViewControllerDelegate {
     func setBackgroundColor(_ color: UIColor) {
         view.backgroundColor = color
     }
-    
 }
