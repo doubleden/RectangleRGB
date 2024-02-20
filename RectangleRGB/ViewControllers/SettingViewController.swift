@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class ViewController: UIViewController {
+final class SettingViewController: UIViewController {
     
     @IBOutlet var rectangleView: UIView!
     
@@ -18,6 +18,8 @@ final class ViewController: UIViewController {
     @IBOutlet var redSlider: UISlider!
     @IBOutlet var greenSlider: UISlider!
     @IBOutlet var blueSlider: UISlider!
+    
+    weak var delegate: SettingViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,13 +34,29 @@ final class ViewController: UIViewController {
             alpha: 1
         )
         
-        switch sender {
-        case redSlider:
-            redValueLabel.text = String(format: "%.2f", sender.value)
-        case greenSlider:
-            greenValueLabel.text = String(format: "%.2f", sender.value)
-        default:
-            blueValueLabel.text = String(format: "%.2f", sender.value)
+        updateValueLabel(sender)
+    }
+
+    
+    private func updateValueLabel(_ slider: UISlider) {
+        if let sliderType = SliderType(rawValue: slider.tag) {
+            switch sliderType {
+            case .red:
+                redValueLabel.text = String(format: "%.2f", slider.value)
+            case .green:
+                greenValueLabel.text = String(format: "%.2f", slider.value)
+            case .blue:
+                blueValueLabel.text = String(format: "%.2f", slider.value)
+            }
         }
+    }
+}
+
+// MARK: Slider Type
+extension SettingViewController {
+    enum SliderType: Int {
+        case red = 1
+        case green = 2
+        case blue = 3
     }
 }
