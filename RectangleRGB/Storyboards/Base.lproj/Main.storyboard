@@ -117,13 +117,26 @@
                                     <constraint firstItem="mP0-is-2b2" firstAttribute="width" secondItem="nbF-F9-L2d" secondAttribute="height" multiplier="361:156" id="7Pk-zo-t9m"/>
                                 </constraints>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5lQ-vM-1ux">
+                                <rect key="frame" x="159" y="615" width="75" height="40.333333333333371"/>
+                                <inset key="contentEdgeInsets" minX="16" minY="20" maxX="20" maxY="16"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Done">
+                                    <fontDescription key="titleFontDescription" style="UICTFontTextStyleTitle2"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="doneButtonAction" destination="BYZ-38-t0r" eventType="touchUpInside" id="gmz-Bk-Iev"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.7973192438636858" green="0.65802786603493357" blue="0.58001922478780876" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                         <constraints>
                             <constraint firstItem="qZu-zF-DC1" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="4UE-D6-y73"/>
+                            <constraint firstItem="5lQ-vM-1ux" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="QvX-2f-mN0"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="qZu-zF-DC1" secondAttribute="trailing" constant="16" id="TBu-Ir-gyt"/>
                             <constraint firstItem="qZu-zF-DC1" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="40" id="h84-Sb-62n"/>
+                            <constraint firstItem="5lQ-vM-1ux" firstAttribute="top" secondItem="qZu-zF-DC1" secondAttribute="bottom" multiplier="1.5" id="oGv-YP-uTH"/>
                         </constraints>
                     </view>
                     <connections>
@@ -148,10 +161,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="2nG-Fa-Xt2"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                     <navigationItem key="navigationItem" id="gZh-UV-YFN">
-                        <barButtonItem key="rightBarButtonItem" title="Item" image="gear.badge.questionmark" catalog="system" id="aOE-6H-8Bn">
+                        <barButtonItem key="rightBarButtonItem" title="Item" image="gearshape.arrow.triangle.2.circlepath" catalog="system" id="aOE-6H-8Bn">
+                            <color key="tintColor" systemColor="tintColor"/>
                             <connections>
                                 <segue destination="BYZ-38-t0r" kind="presentation" modalPresentationStyle="fullScreen" id="CFK-QJ-5N7"/>
                             </connections>
@@ -182,10 +196,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="gear.badge.questionmark" catalog="system" width="128" height="113"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="gearshape.arrow.triangle.2.circlepath" catalog="system" width="128" height="104"/>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
@@ -194,6 +205,9 @@
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="tintColor">
+            <color red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
