@@ -51,33 +51,15 @@ final class SettingViewController: UIViewController {
     }
 }
 
-// MARK: - Enum
 private extension SettingViewController {
+    // MARK: - Enum
     enum Color: Int {
         case red = 1
         case green = 2
         case blue = 3
     }
-}
-
-// MARK: - Private Methods
-private extension SettingViewController {
     
-    func getRGBComponents(_ color: UIColor) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
-        var red: CGFloat = 0
-        var green: CGFloat = 0
-        var blue: CGFloat = 0
-        var alpha: CGFloat = 0
-
-        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        return (red, green, blue)
-    }
-    
-    func string(from slider: UISlider) -> String {
-        String(format: "%.2f", slider.value)
-    }
-    
-    // MARK: - Setup Methods 
+    // MARK: - Setup Methods
     func setupUI() {
         rectangleView.layer.cornerRadius = 10
         setupKeyBoard()
@@ -150,11 +132,9 @@ private extension SettingViewController {
 // MARK: - UITextFieldDelegate
 extension SettingViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
         if isInputCorrect(in: textField) {
             if let textFieldType = Color(rawValue: textField.tag) {
                 let numberTF = Float(textField.text?.replacingOccurrences(of: ",", with: ".") ?? "")
-                
                 switch textFieldType {
                 case .red:
                     redSlider.value = numberTF ?? 0
@@ -169,7 +149,6 @@ extension SettingViewController: UITextFieldDelegate {
                 updateRectangleColor()
             }
         }
-
     }
     
     func isInputCorrect(in textField: UITextField) -> Bool {

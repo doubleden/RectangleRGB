@@ -8,6 +8,21 @@
 import UIKit
 
 extension UIViewController {
+    
+    func getRGBComponents(_ color: UIColor) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+
+        color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return (red, green, blue)
+    }
+    
+    func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
+    }
+    
     func showAlert(
         withTitle title: String,
         andMessage message: String,
