@@ -30,15 +30,7 @@ final class SettingViewController: UIViewController {
     // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupKeyBoard()
-        redValueTF.delegate = self
-        greenValueTF.delegate = self
-        blueValueTF.delegate = self
-        
-        rectangleView.layer.cornerRadius = 10
-        updateSlidersValue()
-        updateRectAngleColor()
-        updateTextFieldValue()
+        updateUI()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -82,6 +74,19 @@ private extension SettingViewController {
     }
     
     // MARK: - Updatable Methods
+    func updateUI() {
+        rectangleView.layer.cornerRadius = 10
+        
+        redValueTF.delegate = self
+        greenValueTF.delegate = self
+        blueValueTF.delegate = self
+        
+        setupKeyBoard()
+        updateSlidersValue()
+        updateRectAngleColor()
+        updateTextFieldValue()
+    }
+    
     func updateValueLabel(_ slider: UISlider) {
         if let sliderType = Color(rawValue: slider.tag) {
             switch sliderType {
