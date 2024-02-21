@@ -23,8 +23,6 @@ final class SettingViewController: UIViewController {
     @IBOutlet var greenValueTF: UITextField!
     @IBOutlet var blueValueTF: UITextField!
     
-    private var isInputValid = true
-    
     var color: UIColor!
     weak var delegate: SettingViewControllerDelegate?
     
@@ -48,11 +46,8 @@ final class SettingViewController: UIViewController {
     }
 
     @IBAction func doneButtonAction() {
-        view.endEditing(true)
-        if isInputValid {
-            delegate?.setBackgroundColor(rectangleView.backgroundColor ?? .white)
-            dismiss(animated: true)
-        }
+        delegate?.setBackgroundColor(rectangleView.backgroundColor ?? .white)
+        dismiss(animated: true)
     }
 }
 
@@ -82,7 +77,7 @@ private extension SettingViewController {
         String(format: "%.2f", slider.value)
     }
     
-    // MARK: - Setup Methods
+    // MARK: - Setup Methods 
     func setupUI() {
         rectangleView.layer.cornerRadius = 10
         setupKeyBoard()
@@ -108,7 +103,7 @@ private extension SettingViewController {
             title: "done",
             style: .done,
             target: self,
-            action: #selector(doneButtonAction)
+            action: #selector(dismissKeyboard)
         )
         
         let spaceInToolBar = UIBarButtonItem(
@@ -119,6 +114,10 @@ private extension SettingViewController {
         
         toolbar.setItems([spaceInToolBar, doneButton], animated: false)
         [redValueTF, greenValueTF, blueValueTF].forEach { $0.inputAccessoryView = toolbar }
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     // MARK: - Update Methods
@@ -151,39 +150,41 @@ private extension SettingViewController {
 // MARK: - UITextFieldDelegate
 extension SettingViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        if isInputCorrect(in: textField) {
+            if let textFieldType = Color(rawValue: textField.tag) {
+                let numberTF = Float(textField.text?.replacingOccurrences(of: ",", with: ".") ?? "")
+                
+                switch textFieldType {
+                case .red:
+                    redSlider.value = numberTF ?? 0
+                    updateValue(for: redSlider)
+                case .green:
+                    greenSlider.value = numberTF ?? 0
+                    updateValue(for: greenSlider)
+                case .blue:
+                    blueSlider.value = numberTF ?? 0
+                    updateValue(for: blueSlider)
+                }
+                updateRectangleColor()
+            }
+        }
+
+    }
+    
+    func isInputCorrect(in textField: UITextField) -> Bool {
         if textField.text == "" {
             setupValue(in: textField)
-            return
-        }
-        
-        guard isValid(input: textField.text ?? "") else {
+            return false
+        } else if !isValid(input: textField.text ?? "") {
             showAlert(
                 withTitle: "Числа можно задавать только от 0 до 1",
                 andMessage: "Или не больше двух цифр после запятой") {
                     self.setupValue(in: textField)
                 }
-            isInputValid = false
-            return
+            return false
         }
-        
-        isInputValid = true
-        
-        if let textFieldType = Color(rawValue: textField.tag) {
-            let numberTF = Float(textField.text?.replacingOccurrences(of: ",", with: ".") ?? "")
-            
-            switch textFieldType {
-            case .red:
-                redSlider.value = numberTF ?? 0
-                updateValue(for: redSlider)
-            case .green:
-                greenSlider.value = numberTF ?? 0
-                updateValue(for: greenSlider)
-            case .blue:
-                blueSlider.value = numberTF ?? 0
-                updateValue(for: blueSlider)
-            }
-            updateRectangleColor()
-        }
+        return true
     }
     
     func setupValue(in textField: UITextField) {
