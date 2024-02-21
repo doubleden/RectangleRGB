@@ -52,13 +52,6 @@ final class SettingViewController: UIViewController {
 }
 
 private extension SettingViewController {
-    // MARK: - Enum
-    enum Color: Int {
-        case red = 1
-        case green = 2
-        case blue = 3
-    }
-    
     // MARK: - Setup Methods
     func setupUI() {
         rectangleView.layer.cornerRadius = 10
@@ -113,18 +106,16 @@ private extension SettingViewController {
     }
     
     func updateValue(for slider: UISlider) {
-        if let sliderType = Color(rawValue: slider.tag) {
-            switch sliderType {
-            case .red:
-                redValueLabel.text = string(from: slider)
-                redValueTF.text = string(from: slider)
-            case .green:
-                greenValueLabel.text = string(from: slider)
-                greenValueTF.text = string(from: slider)
-            case .blue:
-                blueValueLabel.text = string(from: slider)
-                blueValueTF.text = string(from: slider)
-            }
+        switch slider {
+        case redSlider:
+            redValueLabel.text = string(from: slider)
+            redValueTF.text = string(from: slider)
+        case greenSlider:
+            greenValueLabel.text = string(from: slider)
+            greenValueTF.text = string(from: slider)
+        default:
+            blueValueLabel.text = string(from: slider)
+            blueValueTF.text = string(from: slider)
         }
     }
 }
@@ -133,50 +124,48 @@ private extension SettingViewController {
 extension SettingViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         if isInputCorrect(in: textField) {
-            if let textFieldType = Color(rawValue: textField.tag) {
-                let numberTF = Float(textField.text?.replacingOccurrences(of: ",", with: ".") ?? "")
-                switch textFieldType {
-                case .red:
-                    redSlider.value = numberTF ?? 0
-                    updateValue(for: redSlider)
-                case .green:
-                    greenSlider.value = numberTF ?? 0
-                    updateValue(for: greenSlider)
-                case .blue:
-                    blueSlider.value = numberTF ?? 0
-                    updateValue(for: blueSlider)
-                }
-                updateRectangleColor()
+            let numberTF = Float(textField.text?.replacingOccurrences(of: ",", with: ".") ?? "")
+            switch textField {
+            case redValueTF:
+                redSlider.value = numberTF ?? 0
+                updateValue(for: redSlider)
+            case greenValueTF:
+                greenSlider.value = numberTF ?? 0
+                updateValue(for: greenSlider)
+            default:
+                blueSlider.value = numberTF ?? 0
+                updateValue(for: blueSlider)
             }
+            updateRectangleColor()
+            
         }
     }
     
     func isInputCorrect(in textField: UITextField) -> Bool {
         if textField.text == "" {
-            setupValue(in: textField)
+            returnValue(in: textField)
             return false
         } else if !isValid(input: textField.text ?? "") {
             showAlert(
                 withTitle: "Числа можно задавать только от 0 до 1",
                 andMessage: "Или не больше двух цифр после запятой") {
-                    self.setupValue(in: textField)
+                    self.returnValue(in: textField)
                 }
             return false
         }
         return true
     }
     
-    func setupValue(in textField: UITextField) {
-        if let sliderType = Color(rawValue: textField.tag){
-            switch sliderType {
-            case .red:
-                textField.text = redValueLabel.text
-            case .green:
-                textField.text = greenValueLabel.text
-            case .blue:
-                textField.text = blueValueLabel.text
-            }
+    func returnValue(in textField: UITextField) {
+        switch textField {
+        case redSlider:
+            textField.text = redValueLabel.text
+        case greenSlider:
+            textField.text = greenValueLabel.text
+        default:
+            textField.text = blueValueLabel.text
         }
+        
     }
 }
 
