@@ -8,7 +8,7 @@
 import UIKit
 
 final class SettingViewController: UIViewController {
-    // MARK: - IB Outlets
+    
     @IBOutlet var rectangleView: UIView!
     
     @IBOutlet var redValueLabel: UILabel!
@@ -23,36 +23,41 @@ final class SettingViewController: UIViewController {
     @IBOutlet var greenValueTF: UITextField!
     @IBOutlet var blueValueTF: UITextField!
     
-    // MARK: - Public Properties
+    private var isInputValid = true
+    
     var color: UIColor!
     weak var delegate: SettingViewControllerDelegate?
     
-    // MARK: - View Life Cycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateUI()
+        redValueTF.delegate = self
+        greenValueTF.delegate = self
+        blueValueTF.delegate = self
+        setupUI()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         view.endEditing(true)
     }
-    // MARK: - IB Actions
+    
     @IBAction func sliderAction(_ sender: UISlider) {
-        updateRectAngleColor()
-        updateValueLabel(sender)
+        view.endEditing(true)
+        updateValue(for: sender)
+        updateRectangleColor()
     }
 
     @IBAction func doneButtonAction() {
         view.endEditing(true)
-        delegate?.setBackgroundColor(rectangleView.backgroundColor ?? .white)
-        dismiss(animated: true)
+        if isInputValid {
+            delegate?.setBackgroundColor(rectangleView.backgroundColor ?? .white)
+            dismiss(animated: true)
+        }
     }
 }
 
-
-// MARK: - Enum: Color
-extension SettingViewController {
+// MARK: - Enum
+private extension SettingViewController {
     enum Color: Int {
         case red = 1
         case green = 2
@@ -73,52 +78,51 @@ private extension SettingViewController {
         return (red, green, blue)
     }
     
-    // MARK: - Updatable Methods
-    func updateUI() {
+    func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
+    }
+    
+    // MARK: - Setup Methods
+    func setupUI() {
         rectangleView.layer.cornerRadius = 10
-        
-        redValueTF.delegate = self
-        greenValueTF.delegate = self
-        blueValueTF.delegate = self
-        
         setupKeyBoard()
-        updateSlidersValue()
-        updateRectAngleColor()
-        updateTextFieldValue()
+        setupSlidersValue()
+        updateRectangleColor()
     }
     
-    func updateValueLabel(_ slider: UISlider) {
-        if let sliderType = Color(rawValue: slider.tag) {
-            switch sliderType {
-            case .red:
-                redValueLabel.text = String(format: "%.2f", slider.value)
-            case .green:
-                greenValueLabel.text = String(format: "%.2f", slider.value)
-            case .blue:
-                blueValueLabel.text = String(format: "%.2f", slider.value)
-            }
-        }
-    }
-    
-    func updateTextFieldValue() {
-        redValueTF.text = redSlider.value.formatted()
-        greenValueTF.text = greenSlider.value.formatted()
-        blueValueTF.text = blueSlider.value.formatted()
-    }
-    
-    func updateSlidersValue() {
+    func setupSlidersValue() {
         let colorComponents = getRGBComponents(color)
         
         redSlider.value = colorComponents.red.float()
         greenSlider.value = colorComponents.green.float()
         blueSlider.value = colorComponents.blue.float()
         
-        [redSlider, greenSlider, blueSlider].forEach {
-            updateValueLabel($0)
-        }
+        [redSlider, greenSlider, blueSlider].forEach { updateValue(for: $0) }
     }
     
-    func updateRectAngleColor() {
+    func setupKeyBoard() {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(
+            title: "done",
+            style: .done,
+            target: self,
+            action: #selector(doneButtonAction)
+        )
+        
+        let spaceInToolBar = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace,
+            target: nil,
+            action: nil
+        )
+        
+        toolbar.setItems([spaceInToolBar, doneButton], animated: false)
+        [redValueTF, greenValueTF, blueValueTF].forEach { $0.inputAccessoryView = toolbar }
+    }
+    
+    // MARK: - Update Methods
+    func updateRectangleColor() {
         rectangleView.backgroundColor = UIColor(
             red: CGFloat(redSlider.value),
             green: CGFloat(greenSlider.value),
@@ -127,39 +131,71 @@ private extension SettingViewController {
         )
     }
     
-    func setupKeyBoard() {
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        
-        let doneButton = UIBarButtonItem(title: "done", style: .done, target: self, action: #selector(doneButtonAction))
-        let spaceInToolBar = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        
-        toolbar.setItems([spaceInToolBar, doneButton], animated: false)
-        [redValueTF, greenValueTF, blueValueTF].forEach { $0.inputAccessoryView = toolbar }
+    func updateValue(for slider: UISlider) {
+        if let sliderType = Color(rawValue: slider.tag) {
+            switch sliderType {
+            case .red:
+                redValueLabel.text = string(from: slider)
+                redValueTF.text = string(from: slider)
+            case .green:
+                greenValueLabel.text = string(from: slider)
+                greenValueTF.text = string(from: slider)
+            case .blue:
+                blueValueLabel.text = string(from: slider)
+                blueValueTF.text = string(from: slider)
+            }
+        }
     }
 }
 
-// MARK: - UI TextFieldDelegate
+// MARK: - UITextFieldDelegate
 extension SettingViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        
-        let numberTF = Float(textField.text?.replacingOccurrences(of: ",", with: ".") ?? "")
-        switch textField {
-        case redValueTF:
-            redSlider.value = numberTF ?? 0
-            updateValueLabel(redSlider)
-            updateRectAngleColor()
-        case greenValueTF:
-            greenSlider.value = numberTF ?? 0
-            updateValueLabel(greenSlider)
-            updateRectAngleColor()
-        case blueValueTF:
-            blueSlider.value = numberTF ?? 0
-            updateValueLabel(blueSlider)
-            updateRectAngleColor()
-        default:
+        if textField.text == "" {
+            setupValue(in: textField)
             return
+        }
+        
+        guard isValid(input: textField.text ?? "") else {
+            showAlert(
+                withTitle: "Числа можно задавать только от 0 до 1",
+                andMessage: "Или не больше двух цифр после запятой") {
+                    self.setupValue(in: textField)
+                }
+            isInputValid = false
+            return
+        }
+        
+        isInputValid = true
+        
+        if let textFieldType = Color(rawValue: textField.tag) {
+            let numberTF = Float(textField.text?.replacingOccurrences(of: ",", with: ".") ?? "")
+            
+            switch textFieldType {
+            case .red:
+                redSlider.value = numberTF ?? 0
+                updateValue(for: redSlider)
+            case .green:
+                greenSlider.value = numberTF ?? 0
+                updateValue(for: greenSlider)
+            case .blue:
+                blueSlider.value = numberTF ?? 0
+                updateValue(for: blueSlider)
+            }
+            updateRectangleColor()
+        }
+    }
+    
+    func setupValue(in textField: UITextField) {
+        if let sliderType = Color(rawValue: textField.tag){
+            switch sliderType {
+            case .red:
+                textField.text = redValueLabel.text
+            case .green:
+                textField.text = greenValueLabel.text
+            case .blue:
+                textField.text = blueValueLabel.text
+            }
         }
     }
 }

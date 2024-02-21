@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0501CBC52B84C17D004A6249 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0501CBC42B84C17D004A6249 /* MainViewController.swift */; };
+		0501CBC82B864871004A6249 /* Validation + UIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0501CBC72B864871004A6249 /* Validation + UIViewController.swift */; };
 		057B38F42B6D0FF600739EB0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B38F32B6D0FF600739EB0 /* AppDelegate.swift */; };
 		057B38F62B6D0FF600739EB0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B38F52B6D0FF600739EB0 /* SceneDelegate.swift */; };
 		057B38F82B6D0FF600739EB0 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 057B38F72B6D0FF600739EB0 /* SettingViewController.swift */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		0501CBC42B84C17D004A6249 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		0501CBC72B864871004A6249 /* Validation + UIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Validation + UIViewController.swift"; sourceTree = "<group>"; };
 		057B38F02B6D0FF600739EB0 /* RectangleRGB.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RectangleRGB.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		057B38F32B6D0FF600739EB0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		057B38F52B6D0FF600739EB0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +41,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0501CBC62B864808004A6249 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				0501CBC72B864871004A6249 /* Validation + UIViewController.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		057B38E72B6D0FF600739EB0 = {
 			isa = PBXGroup;
 			children = (
@@ -60,6 +70,7 @@
 			children = (
 				05FD42452B84BF6400721D2E /* Configuration */,
 				05FD42472B84BFBF00721D2E /* ViewControllers */,
+				0501CBC62B864808004A6249 /* Extensions */,
 				05FD42462B84BFB200721D2E /* Storyboards */,
 				057B38FC2B6D0FF700739EB0 /* Assets.xcassets */,
 			);
@@ -166,6 +177,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				057B38F82B6D0FF600739EB0 /* SettingViewController.swift in Sources */,
+				0501CBC82B864871004A6249 /* Validation + UIViewController.swift in Sources */,
 				057B38F42B6D0FF600739EB0 /* AppDelegate.swift in Sources */,
 				057B38F62B6D0FF600739EB0 /* SceneDelegate.swift in Sources */,
 				0501CBC52B84C17D004A6249 /* MainViewController.swift in Sources */,
