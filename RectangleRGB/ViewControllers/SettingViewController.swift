@@ -9,6 +9,7 @@ import UIKit
 
 final class SettingViewController: UIViewController {
     
+    // MARK: - Public Properties
     @IBOutlet var rectangleView: UIView!
     
     @IBOutlet var redValueLabel: UILabel!
@@ -24,14 +25,18 @@ final class SettingViewController: UIViewController {
     @IBOutlet var blueValueTF: UITextField!
     
     var color: UIColor!
-    weak var delegate: SettingViewControllerDelegate?
+    unowned var delegate: SettingViewControllerDelegate!
     
+    // MARK: - View Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
-        redValueTF.delegate = self
-        greenValueTF.delegate = self
-        blueValueTF.delegate = self
-        setupUI()
+        rectangleView.layer.cornerRadius = 10
+        
+        setValue(for: redSlider, greenSlider, blueSlider)
+        setValue(for: redValueTF, greenValueTF, blueValueTF)
+        setValue(for: redValueLabel, greenValueLabel, blueValueLabel)
+        
+        setRectangleColor()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -39,38 +44,144 @@ final class SettingViewController: UIViewController {
         view.endEditing(true)
     }
     
+    // MARK: - IBActions
     @IBAction func sliderAction(_ sender: UISlider) {
-        view.endEditing(true)
-        updateValue(for: sender)
-        updateRectangleColor()
+        switch sender {
+        case redSlider:
+            setValue(for: redValueLabel)
+            setValue(for: redValueTF)
+        case greenSlider:
+            setValue(for: greenValueLabel)
+            setValue(for: greenValueTF)
+        default:
+            setValue(for: blueValueLabel)
+            setValue(for: blueValueTF)
+        }
+        
+        setRectangleColor()
     }
 
     @IBAction func doneButtonAction() {
-        delegate?.setBackgroundColor(rectangleView.backgroundColor ?? .white)
+        view.endEditing(true)
+        delegate?.setColor(rectangleView.backgroundColor ?? .white)
         dismiss(animated: true)
     }
 }
 
+// MARK: - Private Methods
 private extension SettingViewController {
-    // MARK: - Setup Methods
-    func setupUI() {
-        rectangleView.layer.cornerRadius = 10
-        setupKeyBoard()
-        setupSlidersValue()
-        updateRectangleColor()
+    
+    func setRectangleColor() {
+        rectangleView.backgroundColor = UIColor(
+            red: CGFloat(redSlider.value),
+            green: CGFloat(greenSlider.value),
+            blue: CGFloat(blueSlider.value),
+            alpha: 1
+        )
     }
     
-    func setupSlidersValue() {
-        let colorComponents = getRGBComponents(color)
-        
-        redSlider.value = colorComponents.red.float()
-        greenSlider.value = colorComponents.green.float()
-        blueSlider.value = colorComponents.blue.float()
-        
-        [redSlider, greenSlider, blueSlider].forEach { updateValue(for: $0) }
+    func string(from slider: UISlider) -> String {
+        String(format: "%.2f", slider.value)
     }
     
-    func setupKeyBoard() {
+    func setValue(for labels: UILabel...) {
+        labels.forEach { label in
+            switch label {
+            case redValueLabel: label.text = string(from: redSlider)
+            case greenValueLabel: label.text = string(from: greenSlider)
+            default: label.text = string(from: blueSlider)
+            }
+        }
+    }
+    
+    func setValue(for textFields: UITextField...) {
+        textFields.forEach { textField in
+            switch textField {
+            case redValueTF: textField.text = string(from: redSlider)
+            case greenValueTF: textField.text = string(from: greenSlider)
+            default: textField.text = string(from: blueSlider)
+            }
+        }
+    }
+    
+    func setValue(for sliders: UISlider...) {
+        let ciColor = CIColor(color: color)
+        sliders.forEach { slider in
+            switch slider {
+            case redSlider: redSlider.value = ciColor.red.float()
+            case greenSlider: greenSlider.value = ciColor.green.float()
+            default: blueSlider.value = ciColor.blue.float()
+            }
+        }
+    }
+    
+    func showAlert(
+        withTitle title: String,
+        andMessage message: String,
+        completion: (() -> Void)? = nil
+    ) {
+        let alert = UIAlertController(
+            title: title,
+            message: message,
+            preferredStyle: .alert
+        )
+        let okButton = UIAlertAction(title: "OK", style: .default) {_ in
+            completion?()
+        }
+        
+        alert.addAction(okButton)
+        present(alert, animated: true)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension SettingViewController: UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        
+        guard let text = textField.text, textField.text != "" else {
+            setValue(for: textField)
+            return
+        }
+        
+        if let range = text.range(of: ".") {
+            let decimalPart = text[range.upperBound...]
+            if decimalPart.count > 2 {
+                return showAlert(
+                    withTitle: "Не верный формат",
+                    andMessage: "После запятой не должно быть больше двух цифр") {
+                        self.setValue(for: textField)
+                        textField.becomeFirstResponder()
+                    }
+            }
+        }
+        
+        guard let numberTF = Float(text), (0...1).contains(numberTF) else {
+            showAlert(
+                withTitle: "Неверное число",
+                andMessage: "Число должно быть от 0.00 до 1.00"
+            ) {
+                self.setValue(for: textField)
+                textField.becomeFirstResponder()
+            }
+            return
+        }
+        
+        switch textField {
+        case redValueTF:
+            redSlider.setValue(numberTF, animated: true)
+            setValue(for: redValueLabel)
+        case greenValueTF:
+            greenSlider.setValue(numberTF, animated: true)
+            setValue(for: greenValueLabel)
+        default:
+            blueSlider.setValue(numberTF, animated: true)
+            setValue(for: blueValueLabel)
+        }
+        setRectangleColor()
+        
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         
@@ -78,7 +189,7 @@ private extension SettingViewController {
             title: "done",
             style: .done,
             target: self,
-            action: #selector(dismissKeyboard)
+            action: #selector(resignFirstResponder)
         )
         
         let spaceInToolBar = UIBarButtonItem(
@@ -88,84 +199,32 @@ private extension SettingViewController {
         )
         
         toolbar.setItems([spaceInToolBar, doneButton], animated: false)
-        [redValueTF, greenValueTF, blueValueTF].forEach { $0.inputAccessoryView = toolbar }
     }
     
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
-    // MARK: - Update Methods
-    func updateRectangleColor() {
-        rectangleView.backgroundColor = UIColor(
-            red: CGFloat(redSlider.value),
-            green: CGFloat(greenSlider.value),
-            blue: CGFloat(blueSlider.value),
-            alpha: 1
-        )
-    }
-    
-    func updateValue(for slider: UISlider) {
-        switch slider {
-        case redSlider:
-            redValueLabel.text = string(from: slider)
-            redValueTF.text = string(from: slider)
-        case greenSlider:
-            greenValueLabel.text = string(from: slider)
-            greenValueTF.text = string(from: slider)
-        default:
-            blueValueLabel.text = string(from: slider)
-            blueValueTF.text = string(from: slider)
-        }
-    }
-}
-
-// MARK: - UITextFieldDelegate
-extension SettingViewController: UITextFieldDelegate {
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if isInputCorrect(in: textField) {
-            let numberTF = Float(textField.text?.replacingOccurrences(of: ",", with: ".") ?? "")
-            switch textField {
-            case redValueTF:
-                redSlider.value = numberTF ?? 0
-                updateValue(for: redSlider)
-            case greenValueTF:
-                greenSlider.value = numberTF ?? 0
-                updateValue(for: greenSlider)
-            default:
-                blueSlider.value = numberTF ?? 0
-                updateValue(for: blueSlider)
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        
+        let allowedCharacterSet = CharacterSet(charactersIn: "0123456789,.")
+        let typedCharacter = CharacterSet(charactersIn: string)
+        let isAllowedCharacter = typedCharacter.isSubset(of: allowedCharacterSet)
+        
+        if !isAllowedCharacter {
+            showAlert(withTitle: "Ошибка !", andMessage: "Вводить только цифры") {
+                self.setValue(for: textField)
+                textField.becomeFirstResponder()
             }
-            updateRectangleColor()
-            
-        }
-    }
-    
-    func isInputCorrect(in textField: UITextField) -> Bool {
-        if textField.text == "" {
-            returnValue(in: textField)
             return false
-        } else if !isValid(input: textField.text ?? "") {
-            showAlert(
-                withTitle: "Числа можно задавать только от 0 до 1",
-                andMessage: "Или не больше двух цифр после запятой") {
-                    self.returnValue(in: textField)
-                }
-            return false
-        }
-        return true
-    }
-    
-    func returnValue(in textField: UITextField) {
-        switch textField {
-        case redSlider:
-            textField.text = redValueLabel.text
-        case greenSlider:
-            textField.text = greenValueLabel.text
-        default:
-            textField.text = blueValueLabel.text
         }
         
+        if string == "," {
+            textField.text = (textField.text ?? "") + "."
+            return false
+        }
+        
+        return true
     }
 }
 
