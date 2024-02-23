@@ -136,8 +136,8 @@ private extension SettingViewController {
 
 // MARK: - UITextFieldDelegate
 extension SettingViewController: UITextFieldDelegate {
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
         guard let text = textField.text, textField.text != "" else {
             setValue(for: textField)
             return
@@ -178,7 +178,6 @@ extension SettingViewController: UITextFieldDelegate {
             setValue(for: blueValueLabel)
         }
         setRectangleColor()
-        
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
