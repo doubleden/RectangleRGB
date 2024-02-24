@@ -24,7 +24,6 @@ final class SettingViewController: UIViewController {
     @IBOutlet var greenValueTF: UITextField!
     @IBOutlet var blueValueTF: UITextField!
     
-    var color: UIColor!
     unowned var delegate: SettingViewControllerDelegate!
     
     // MARK: - View Life Circle
@@ -105,7 +104,7 @@ private extension SettingViewController {
     }
     
     func setValue(for sliders: UISlider...) {
-        let ciColor = CIColor(color: color)
+        let ciColor = CIColor(color: delegate.color)
         sliders.forEach { slider in
             switch slider {
             case redSlider: redSlider.value = ciColor.red.float()
